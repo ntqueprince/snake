@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -6,7 +6,7 @@
     <title>Neon Snake Adventure - High Scores</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Existing CSS from your snake.html, with modifications for layout */
+        /* Base styles */
         * {
             margin: 0;
             padding: 0;
@@ -17,13 +17,13 @@
         body {
             background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
             height: 100vh;
-            overflow: hidden;
-            display: flex; /* Changed to flex for side-by-side layout */
+            overflow: hidden; /* Prevent body scrolling */
+            display: flex; /* Use flexbox for main layout */
             justify-content: center;
             align-items: center;
             color: #fff;
             position: relative;
-            gap: 20px; /* Space between game and high scores */
+            gap: 2rem; /* Space between game and high scores, using rem for responsiveness */
         }
 
         body::before {
@@ -39,40 +39,43 @@
             z-index: -1;
         }
 
+        /* Main game container */
         .game-container {
-            width: 70%; /* Adjust width to make space for high scores */
-            max-width: 900px; /* Max width for game container */
-            height: 90vh;
             display: flex;
             flex-direction: column;
             background: rgba(15, 15, 35, 0.85);
-            border-radius: 20px;
+            border-radius: 1.25rem; /* 20px */
             overflow: hidden;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0.9375rem 2.1875rem rgba(0, 0, 0, 0.5); /* 15px 35px */
+            backdrop-filter: blur(0.625rem); /* 10px */
+            border: 0.0625rem solid rgba(255, 255, 255, 0.1); /* 1px */
             position: relative;
+            /* Flex-grow to take available space */
+            flex-grow: 1; 
+            max-width: 70%; /* Limit initial size on very wide screens */
+            height: 95vh; /* Take almost full height */
+            margin: 1rem; /* Small margin for edges */
         }
 
         .header {
-            padding: 20px 30px;
+            padding: 1.25rem 1.875rem; /* 20px 30px */
             display: flex;
             justify-content: space-between;
             align-items: center;
             background: rgba(25, 25, 55, 0.7);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 0.0625rem solid rgba(255, 255, 255, 0.1); /* 1px */
         }
 
         .logo {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 0.9375rem; /* 15px */
         }
 
         .logo i {
             font-size: 2.5rem;
             color: #ff7e5f;
-            text-shadow: 0 0 15px rgba(255, 126, 95, 0.7);
+            text-shadow: 0 0 0.9375rem rgba(255, 126, 95, 0.7); /* 15px */
         }
 
         .logo h1 {
@@ -81,23 +84,23 @@
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            letter-spacing: 1px;
+            letter-spacing: 0.0625rem; /* 1px */
         }
 
         .stats {
             display: flex;
-            gap: 30px;
+            gap: 1.875rem; /* 30px */
         }
 
         .stat-box {
             display: flex;
             flex-direction: column;
             align-items: center;
-            min-width: 120px;
-            padding: 10px 20px;
+            min-width: 7.5rem; /* 120px */
+            padding: 0.625rem 1.25rem; /* 10px 20px */
             background: rgba(0, 0, 0, 0.3);
-            border-radius: 15px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0.9375rem; /* 15px */
+            border: 0.0625rem solid rgba(255, 255, 255, 0.1); /* 1px */
         }
 
         .stat-value {
@@ -110,14 +113,14 @@
             font-size: 0.9rem;
             color: #a0d2eb;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 0.0625rem; /* 1px */
         }
 
         .level-progress {
-            width: 200px;
-            height: 12px;
+            width: 12.5rem; /* 200px */
+            height: 0.75rem; /* 12px */
             background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
+            border-radius: 0.625rem; /* 10px */
             overflow: hidden;
             position: relative;
         }
@@ -125,73 +128,77 @@
         .level-progress-bar {
             height: 100%;
             background: linear-gradient(90deg, #ff7e5f, #feb47b);
-            border-radius: 10px;
+            border-radius: 0.625rem; /* 10px */
             transition: width 0.3s ease;
         }
 
         .level-indicator {
             position: absolute;
-            top: -25px;
+            top: -1.5625rem; /* -25px */
             left: 0;
             font-size: 0.9rem;
             color: #86a8e7;
         }
 
         .game-area {
-            flex: 1;
+            flex: 1; /* Allow game area to grow and take available space */
             display: flex;
             position: relative;
             overflow: hidden;
         }
 
         #game-board {
-            flex: 1;
+            flex: 1; /* Game board also grows */
             position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
+        /* Canvas should take 100% of its parent's dimensions */
         canvas {
             display: block;
-            width: 100%;
+            width: 100%; 
             height: 100%;
         }
 
         .controls {
-            padding: 20px;
+            padding: 1.25rem; /* 20px */
             display: flex;
             justify-content: center;
-            gap: 20px;
+            gap: 1.25rem; /* 20px */
             background: rgba(25, 25, 55, 0.7);
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            border-top: 0.0625rem solid rgba(255, 255, 255, 0.1); /* 1px */
         }
 
         .btn {
-            padding: 15px 30px;
+            padding: 0.9375rem 1.875rem; /* 15px 30px */
             font-size: 1.1rem;
             font-weight: bold;
             border: none;
-            border-radius: 50px;
+            border-radius: 3.125rem; /* 50px */
             cursor: pointer;
             transition: all 0.3s ease;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 0.625rem; /* 10px */
             background: linear-gradient(45deg, #ff7e5f, #feb47b);
             color: white;
-            box-shadow: 0 5px 15px rgba(255, 126, 95, 0.4);
+            box-shadow: 0 0.3125rem 0.9375rem rgba(255, 126, 95, 0.4); /* 5px 15px */
         }
 
         .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(255, 126, 95, 0.6);
+            transform: translateY(-0.1875rem); /* -3px */
+            box-shadow: 0 0.5rem 1.25rem rgba(255, 126, 95, 0.6); /* 8px 20px */
         }
 
         .btn:active {
-            transform: translateY(1px);
+            transform: translateY(0.0625rem); /* 1px */
         }
 
         .btn-secondary {
             background: rgba(255, 255, 255, 0.15);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 0.3125rem 0.9375rem rgba(0, 0, 0, 0.2); /* 5px 15px */
         }
 
         .btn-secondary:hover {
@@ -210,24 +217,24 @@
             align-items: center;
             background: rgba(15, 15, 35, 0.9);
             z-index: 10;
-            padding: 30px;
+            padding: 1.875rem; /* 30px */
             text-align: center;
         }
 
         .overlay h2 {
             font-size: 4rem;
-            margin-bottom: 20px;
+            margin-bottom: 1.25rem; /* 20px */
             background: linear-gradient(45deg, #ff7e5f, #feb47b);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            text-shadow: 0 5px 15px rgba(255, 126, 95, 0.5);
+            text-shadow: 0 0.3125rem 0.9375rem rgba(255, 126, 95, 0.5); /* 5px 15px */
         }
 
         .overlay p {
             font-size: 1.5rem;
-            max-width: 600px;
-            margin-bottom: 30px;
+            max-width: 37.5rem; /* 600px */
+            margin-bottom: 1.875rem; /* 30px */
             color: #a0d2eb;
             line-height: 1.6;
         }
@@ -237,16 +244,16 @@
         }
 
         .instructions {
-            margin-top: 30px;
-            padding: 20px;
+            margin-top: 1.875rem; /* 30px */
+            padding: 1.25rem; /* 20px */
             background: rgba(0, 0, 0, 0.2);
-            border-radius: 15px;
-            max-width: 600px;
+            border-radius: 0.9375rem; /* 15px */
+            max-width: 37.5rem; /* 600px */
         }
 
         .instructions h3 {
             color: #feb47b;
-            margin-bottom: 15px;
+            margin-bottom: 0.9375rem; /* 15px */
             font-size: 1.3rem;
         }
 
@@ -254,14 +261,14 @@
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 20px;
+            gap: 1.25rem; /* 20px */
             list-style: none;
         }
 
         .instructions li {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 0.5rem; /* 8px */
             font-size: 1rem;
             color: #86a8e7;
         }
@@ -289,16 +296,16 @@
             font-weight: bold;
             color: rgba(255, 255, 255, 0.1);
             text-transform: uppercase;
-            letter-spacing: 10px;
+            letter-spacing: 0.625rem; /* 10px */
         }
 
         .mobile-controls {
             display: none;
-            position: absolute;
-            bottom: 100px;
+            position: absolute; /* Adjusted for better placement on desktop too, but hidden */
+            bottom: 6.25rem; /* 100px */
             width: 100%;
             justify-content: center;
-            gap: 30px;
+            gap: 1.875rem; /* 30px */
             z-index: 4;
         }
 
@@ -306,9 +313,9 @@
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             grid-template-rows: repeat(3, 1fr);
-            gap: 10px;
-            width: 150px;
-            height: 150px;
+            gap: 0.625rem; /* 10px */
+            width: 9.375rem; /* 150px */
+            height: 9.375rem; /* 150px */
         }
 
         .dpad-btn {
@@ -322,8 +329,8 @@
             align-items: center;
             cursor: pointer;
             transition: all 0.2s ease;
-            backdrop-filter: blur(5px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(0.3125rem); /* 5px */
+            border: 0.0625rem solid rgba(255, 255, 255, 0.1); /* 1px */
         }
 
         .dpad-btn:active {
@@ -342,45 +349,46 @@
             cursor: default;
         }
 
-        /* NEW CSS FOR HIGH SCORES LIST */
+        /* High Score Section - always on the side for larger screens */
         .high-score-section {
-            width: 28%; /* Adjust width for high score section */
-            max-width: 350px; /* Max width for high score section */
-            height: 90vh; /* Match game container height */
+            width: 25rem; /* Fixed width for high score section */
+            height: 95vh; /* Match game container height */
             background: rgba(15, 15, 35, 0.85);
-            border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 20px 30px;
+            border-radius: 1.25rem; /* 20px */
+            box-shadow: 0 0.9375rem 2.1875rem rgba(0, 0, 0, 0.5); /* 15px 35px */
+            backdrop-filter: blur(0.625rem); /* 10px */
+            border: 0.0625rem solid rgba(255, 255, 255, 0.1); /* 1px */
+            padding: 1.25rem 1.875rem; /* 20px 30px */
             display: flex;
             flex-direction: column;
-            justify-content: flex-start; /* Align content to top */
-            align-items: center; /* Center horizontally */
+            justify-content: flex-start;
+            align-items: center;
             overflow-y: auto; /* Enable scrolling if scores exceed height */
+            margin: 1rem; /* Small margin for edges */
+            flex-shrink: 0; /* Prevent it from shrinking */
         }
 
         .high-score-section h3 {
             font-size: 1.8rem;
             color: #feb47b;
             text-align: center;
-            margin-bottom: 20px;
-            text-shadow: 0 0 10px rgba(254, 180, 123, 0.5);
-            padding-bottom: 10px; /* Add padding below heading */
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Separator */
+            margin-bottom: 1.25rem; /* 20px */
+            text-shadow: 0 0 0.625rem rgba(254, 180, 123, 0.5); /* 10px */
+            padding-bottom: 0.625rem; /* 10px */
+            border-bottom: 0.0625rem solid rgba(255, 255, 255, 0.1); /* 1px */
             width: 100%;
         }
 
         .high-score-list {
             list-style: none;
             padding: 0;
-            width: 100%; /* Ensure list takes full width */
+            width: 100%;
         }
 
         .high-score-list li {
             font-size: 1.2rem;
-            padding: 10px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 0.625rem 0; /* 10px */
+            border-bottom: 0.0625rem solid rgba(255, 255, 255, 0.08); /* 1px */
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -408,12 +416,12 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.7); /* Dark semi-transparent background */
-            backdrop-filter: blur(5px); /* Blurred background */
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(0.3125rem); /* 5px */
             display: flex;
             justify-content: center;
             align-items: center;
-            z-index: 1000; /* On top of everything */
+            z-index: 1000;
             opacity: 0;
             visibility: hidden;
             transition: opacity 0.3s ease, visibility 0.3s ease;
@@ -425,15 +433,15 @@
         }
 
         .custom-modal-content {
-            background: linear-gradient(135deg, #1a0f3d, #3c2a6f); /* Gradient background */
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.6);
+            background: linear-gradient(135deg, #1a0f3d, #3c2a6f);
+            padding: 2.5rem; /* 40px */
+            border-radius: 1.25rem; /* 20px */
+            box-shadow: 0 0.9375rem 1.875rem rgba(0, 0, 0, 0.6); /* 15px 30px */
             text-align: center;
-            max-width: 500px;
+            max-width: 31.25rem; /* 500px */
             width: 90%;
-            border: 2px solid #86a8e7; /* Neon blue border */
-            transform: translateY(-50px); /* Initial slide-in effect */
+            border: 0.125rem solid #86a8e7; /* 2px */
+            transform: translateY(-3.125rem); /* -50px */
             opacity: 0;
             transition: transform 0.3s ease, opacity 0.3s ease;
         }
@@ -449,22 +457,22 @@
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            margin-bottom: 20px;
-            text-shadow: 0 0 15px rgba(255, 126, 95, 0.7);
+            margin-bottom: 1.25rem; /* 20px */
+            text-shadow: 0 0 0.9375rem rgba(255, 126, 95, 0.7); /* 15px */
         }
 
         .custom-modal-content p {
             font-size: 1.3rem;
             color: #a0d2eb;
-            margin-bottom: 25px;
+            margin-bottom: 1.5625rem; /* 25px */
         }
 
         .custom-modal-content input {
-            width: calc(100% - 40px); /* Adjust for padding */
-            padding: 15px 20px;
-            margin-bottom: 25px;
-            border: 2px solid #86a8e7; /* Neon blue border */
-            border-radius: 10px;
+            width: calc(100% - 2.5rem); /* Adjust for 20px padding on each side */
+            padding: 0.9375rem 1.25rem; /* 15px 20px */
+            margin-bottom: 1.5625rem; /* 25px */
+            border: 0.125rem solid #86a8e7; /* 2px */
+            border-radius: 0.625rem; /* 10px */
             background: rgba(255, 255, 255, 0.1);
             color: #fff;
             font-size: 1.1rem;
@@ -473,50 +481,49 @@
         }
 
         .custom-modal-content input:focus {
-            border-color: #ff7e5f; /* Highlight on focus */
-            box-shadow: 0 0 10px rgba(255, 126, 95, 0.5);
+            border-color: #ff7e5f;
+            box-shadow: 0 0 0.625rem rgba(255, 126, 95, 0.5); /* 10px */
         }
 
         .custom-modal-content .modal-buttons {
             display: flex;
             justify-content: center;
-            gap: 20px;
+            gap: 1.25rem; /* 20px */
         }
 
-        /* Reusing .btn styles for modal buttons */
         .custom-modal-content .btn {
-            padding: 12px 25px;
+            padding: 0.75rem 1.5625rem; /* 12px 25px */
             font-size: 1rem;
         }
 
-        /* Media queries for responsiveness */
+        /* Media Queries - Responsive Layout */
         @media (max-width: 1200px) {
             body {
                 flex-direction: column; /* Stack game and scores vertically */
-                height: auto; /* Allow content to dictate height */
-                min-height: 100vh; /* Ensure full viewport height on smaller screens */
-                gap: 0; /* Remove gap when stacking */
+                height: auto;
+                min-height: 100vh;
+                gap: 1.25rem; /* 20px */
             }
             .game-container {
                 width: 95%; /* Take more width when stacked */
                 max-width: 900px;
-                margin-top: 20px; /* Add space from top */
+                margin-top: 1.25rem; /* 20px */
                 height: auto;
             }
             .high-score-section {
                 width: 95%; /* Take more width when stacked */
                 max-width: 500px; /* Limit max width for high score section */
-                height: auto; /* Adjust height when stacked */
-                margin-top: 20px; /* Add space between game and scores */
-                margin-bottom: 20px; /* Add space at bottom */
+                height: auto;
+                margin-top: 0; /* Remove top margin */
+                margin-bottom: 1.25rem; /* 20px at bottom */
             }
         }
 
         @media (max-width: 768px) {
             .header {
                 flex-direction: column;
-                gap: 15px;
-                padding: 15px;
+                gap: 0.9375rem; /* 15px */
+                padding: 0.9375rem; /* 15px */
             }
             
             .stats {
@@ -526,7 +533,7 @@
             
             .stat-box {
                 min-width: auto;
-                padding: 8px 15px;
+                padding: 0.5rem 0.9375rem; /* 8px 15px */
             }
             
             .stat-value {
@@ -534,7 +541,7 @@
             }
             
             .level-progress {
-                width: 150px;
+                width: 9.375rem; /* 150px */
             }
             
             .overlay h2 {
@@ -548,7 +555,7 @@
             .mobile-controls {
                 display: flex;
                 position: static; /* Position normally within flow */
-                margin-top: 20px; /* Space between game and controls */
+                margin-top: 1.25rem; /* 20px */
             }
             
             .controls {
@@ -557,15 +564,15 @@
 
             .high-score-section h3 {
                 font-size: 1.5rem;
-                margin-bottom: 15px;
+                margin-bottom: 0.9375rem; /* 15px */
             }
             .high-score-list li {
                 font-size: 1.1rem;
-                padding: 8px 0;
+                padding: 0.5rem 0; /* 8px */
             }
 
             .custom-modal-content {
-                padding: 25px;
+                padding: 1.5625rem; /* 25px */
             }
             .custom-modal-content h3 {
                 font-size: 2rem;
@@ -574,7 +581,7 @@
                 font-size: 1.1rem;
             }
             .custom-modal-content input {
-                padding: 12px 15px;
+                padding: 0.75rem 0.9375rem; /* 12px 15px */
             }
         }
 
@@ -589,13 +596,13 @@
             }
             
             .btn {
-                padding: 12px 20px;
+                padding: 0.75rem 1.25rem; /* 12px 20px */
                 font-size: 1rem;
             }
             
             .dpad {
-                width: 120px;
-                height: 120px;
+                width: 7.5rem; /* 120px */
+                height: 7.5rem; /* 120px */
             }
         }
     </style>
@@ -698,6 +705,7 @@
         </div>
     </div>
 
+    <!-- New High Score Section (moved outside game-container and adjusted for side layout) -->
     <div class="high-score-section">
         <h3>Top 10 High Scores</h3>
         <ul id="top-scores-list" class="high-score-list">
@@ -705,6 +713,7 @@
         </ul>
     </div>
 
+    <!-- CUSTOM NAME INPUT MODAL -->
     <div id="name-input-modal" class="custom-modal-overlay hidden">
         <div class="custom-modal-content">
             <h3>Congratulations!</h3>
@@ -718,6 +727,7 @@
         </div>
     </div>
 
+    <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-database-compat.js"></script>
 
@@ -838,14 +848,19 @@
             
             // Set canvas to full size and initialize grid dimensions
             function resizeCanvas() {
+                // Ensure canvas matches the dimensions of its parent (.game-board)
+                // .game-board itself will be flex-grown to fill available space
                 canvas.width = canvas.parentElement.clientWidth;
                 canvas.height = canvas.parentElement.clientHeight;
                 gridWidth = Math.floor(canvas.width / gridSize);
                 gridHeight = Math.floor(canvas.height / gridSize);
+                // Re-draw after resize to adjust game elements
+                draw();
             }
             
             window.addEventListener('resize', resizeCanvas);
-            resizeCanvas();
+            // Call resizeCanvas once on load to set initial dimensions
+            resizeCanvas(); 
             
             // Initialize snake with default values
             snake = [
@@ -882,7 +897,7 @@
                 return colors[(level - 1) % colors.length]; 
             }
             
-            // Initialize food before first draw
+            // Initial draw before first game starts
             createFood();
             
             // Draw game elements
@@ -937,6 +952,7 @@
                     let eyeOffsetX = 0;
                     let eyeOffsetY = 0;
                     
+                    // Adjusted eye positioning logic
                     if (direction === 'right') {
                         eyeOffsetX = gridSize / 4;
                         eyeOffsetY = -gridSize / 8;
