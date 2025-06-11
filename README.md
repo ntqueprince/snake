@@ -1,3 +1,4 @@
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -14,7 +15,6 @@
         }
 
         body {
-      flex-direction: row !important;
             background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
             height: 100vh;
             overflow: hidden; /* Prevent body scrolling */
@@ -497,20 +497,7 @@
         }
 
         /* Media Queries - Responsive Layout */
-        @media (max-width: 1200px) {
-            body {
-      flex-direction: row !important;
-                flex-direction: column; /* Stack game and scores vertically */
-                height: auto;
-                min-height: 100vh;
-                gap: 1.25rem; /* 20px */
-            }
-            .game-container {
-                width: 95%; /* Take more width when stacked */
-                max-width: 900px;
-                margin-top: 1.25rem; /* 20px */
-                height: auto;
-            }
+        
             .high-score-section {
                 width: 95%; /* Take more width when stacked */
                 max-width: 500px; /* Limit max width for high score section */
@@ -607,6 +594,12 @@
             }
         }
     </style>
+
+<style>
+  body {
+    flex-direction: row !important;
+  }
+</style>
 </head>
 <body>
     <div class="game-container">
