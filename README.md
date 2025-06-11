@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -6,7 +6,7 @@
     <title>Neon Snake Adventure - High Scores</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Existing CSS from your snake.html */
+        /* Existing CSS from your snake.html, with modifications for layout */
         * {
             margin: 0;
             padding: 0;
@@ -18,11 +18,12 @@
             background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
             height: 100vh;
             overflow: hidden;
-            display: flex;
+            display: flex; /* Changed to flex for side-by-side layout */
             justify-content: center;
             align-items: center;
             color: #fff;
             position: relative;
+            gap: 20px; /* Space between game and high scores */
         }
 
         body::before {
@@ -39,8 +40,8 @@
         }
 
         .game-container {
-            width: 95%;
-            max-width: 1200px;
+            width: 70%; /* Adjust width to make space for high scores */
+            max-width: 900px; /* Max width for game container */
             height: 90vh;
             display: flex;
             flex-direction: column;
@@ -343,15 +344,20 @@
 
         /* NEW CSS FOR HIGH SCORES LIST */
         .high-score-section {
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 15px;
-            padding: 20px 30px;
-            margin-top: 20px;
-            max-width: 400px;
-            width: 90%;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            width: 28%; /* Adjust width for high score section */
+            max-width: 350px; /* Max width for high score section */
+            height: 90vh; /* Match game container height */
+            background: rgba(15, 15, 35, 0.85);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            margin-left: 20px; /* Add some space to the left of the game container */
+            padding: 20px 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start; /* Align content to top */
+            align-items: center; /* Center horizontally */
+            overflow-y: auto; /* Enable scrolling if scores exceed height */
         }
 
         .high-score-section h3 {
@@ -360,11 +366,15 @@
             text-align: center;
             margin-bottom: 20px;
             text-shadow: 0 0 10px rgba(254, 180, 123, 0.5);
+            padding-bottom: 10px; /* Add padding below heading */
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Separator */
+            width: 100%;
         }
 
         .high-score-list {
             list-style: none;
             padding: 0;
+            width: 100%; /* Ensure list takes full width */
         }
 
         .high-score-list li {
@@ -480,16 +490,29 @@
         }
 
         /* Media queries for responsiveness */
-        @media (max-width: 768px) {
+        @media (max-width: 1200px) {
             body {
                 flex-direction: column; /* Stack game and scores vertically */
                 height: auto; /* Allow content to dictate height */
                 min-height: 100vh; /* Ensure full viewport height on smaller screens */
+                gap: 0; /* Remove gap when stacking */
             }
             .game-container {
+                width: 95%; /* Take more width when stacked */
+                max-width: 900px;
                 margin-top: 20px; /* Add space from top */
                 height: auto;
             }
+            .high-score-section {
+                width: 95%; /* Take more width when stacked */
+                max-width: 500px; /* Limit max width for high score section */
+                height: auto; /* Adjust height when stacked */
+                margin-top: 20px; /* Add space between game and scores */
+                margin-bottom: 20px; /* Add space at bottom */
+            }
+        }
+
+        @media (max-width: 768px) {
             .header {
                 flex-direction: column;
                 gap: 15px;
@@ -532,12 +555,6 @@
                 flex-wrap: wrap;
             }
 
-            .high-score-section {
-                width: 95%; /* Adjust width for smaller screens */
-                margin-left: 0; /* Remove left margin */
-                margin-top: 20px; /* Add space between game and scores */
-                margin-bottom: 20px; /* Add space at bottom */
-            }
             .high-score-section h3 {
                 font-size: 1.5rem;
                 margin-bottom: 15px;
@@ -681,15 +698,13 @@
         </div>
     </div>
 
-    <!-- New High Score Section -->
     <div class="high-score-section">
-        <h3>Top 10 High Scores</h3> <!-- Changed from Top 3 to Top 10 -->
+        <h3>Top 10 High Scores</h3>
         <ul id="top-scores-list" class="high-score-list">
             <li>Loading scores...</li>
         </ul>
     </div>
 
-    <!-- CUSTOM NAME INPUT MODAL -->
     <div id="name-input-modal" class="custom-modal-overlay hidden">
         <div class="custom-modal-content">
             <h3>Congratulations!</h3>
@@ -703,10 +718,7 @@
         </div>
     </div>
 
-    <!-- Firebase SDKs -->
-    <!-- Firebase App SDK (required) -->
     <script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-app-compat.js"></script>
-    <!-- Firebase Realtime Database SDK (for storing/retrieving scores) -->
     <script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-database-compat.js"></script>
 
     <script>
@@ -716,58 +728,46 @@
             apiKey: "AIzaSyDSDph09hxTg0oC9cLEkKDHKX5_TPL.PPL.g",
             authDomain: "snake-44a34.firebaseapp.com",
             projectId: "snake-44a34",
-            // StorageBucket correction: often projectId.appspot.com
             storageBucket: "snake-44a34.appspot.com",
             messagingSenderId: "999271392382",
             appId: "1:999271392382:web:3249364e02ec81de51242f",
-            measurementId: "G-ECMRQGJ775" // Optional, if analytics enabled
+            measurementId: "G-ECMRQGJ775"
         };
 
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
 
         // Reference the Database service
-        // This 'database' object will be used in your game logic script to save scores.
         const database = firebase.database();
 
         // Code to fetch and display high scores in real-time
-        // 'scores' is the node (collection) in Firebase Realtime Database where high scores will be stored.
         const scoresRef = database.ref('scores');
 
-        // .orderByChild('score'): Sorts scores based on the 'score' property.
-        // .limitToLast(10): Retrieves only the last 10 entries after sorting (which will be the highest scores).
-        // Changed from 3 to 10 for top 10 scores.
         scoresRef.orderByChild('score').limitToLast(10).on('value', (snapshot) => {
             const highScores = [];
             snapshot.forEach((childSnapshot) => {
-                // Add each score entry to the highScores array.
                 highScores.push(childSnapshot.val());
             });
 
-            // Sort scores in descending order (Highest to Lowest)
-            // Because limitToLast gives the highest scores at the end, we need to reverse them.
             highScores.sort((a, b) => b.score - a.score);
 
-            // Display the top 10 scores in the HTML list.
             const topScoresList = document.getElementById('top-scores-list');
-            topScoresList.innerHTML = ''; // Clear the previous list.
+            topScoresList.innerHTML = ''; 
 
             if (highScores.length === 0) {
                 topScoresList.innerHTML = '<li>No scores yet. Play to set a record!</li>';
             } else {
                 highScores.forEach((scoreData, index) => {
                     const listItem = document.createElement('li');
-                    // Display score with name and value.
                     listItem.innerHTML = `<span>${index + 1}. ${scoreData.name}</span><span>${scoreData.score}</span>`;
                     topScoresList.appendChild(listItem);
                 });
             }
-            console.log("High Scores Updated:", highScores); // For console checking.
+            console.log("High Scores Updated:", highScores);
         }, (error) => {
             console.error("Firebase fetch error:", error);
             document.getElementById('top-scores-list').innerHTML = '<li>Failed to load scores. Please check console for errors.</li>';
         });
-
 
         // Existing game logic from your snake.html starts here
         document.addEventListener('DOMContentLoaded', () => {
@@ -814,26 +814,26 @@
             let food = {};
             let direction = 'right';
             let nextDirection = 'right';
-            let score = 0; // Game score
+            let score = 0; 
             let level = 1;
             let speed = 1;
-            let baseSpeed = speed; // Store the base speed (user-set speed)
+            let baseSpeed = speed; 
             let gameRunning = false;
             let gamePaused = false;
             let foodEaten = 0;
-            let foodsToNextLevel = 5; // Now represents foods needed to reach a checkpoint
+            let foodsToNextLevel = 5; 
             let animationFrameId;
             let lastRenderTime = 0;
             let particles = [];
-            let arrowKeysHeld = 0; // Track how many arrow keys are currently held
+            let arrowKeysHeld = 0; 
             
             // Snake colors for each level
             const snakeColors = [
-                '#FF7E5F', // Coral
-                '#86A8E7', // Light blue
-                '#91EAE4', // Turquoise
-                '#FEB47B', // Peach
-                '#D9A7C7'  // Lavender
+                '#FF7E5F', 
+                '#86A8E7', 
+                '#91EAE4', 
+                '#FEB47B', 
+                '#D9A7C7'  
             ];
             
             // Set canvas to full size and initialize grid dimensions
@@ -873,13 +873,13 @@
             // Get food color based on level
             function getFoodColor() {
                 const colors = [
-                    '#FF6B6B', // Red
-                    '#4ECDC4', // Teal
-                    '#FFD166', // Yellow
-                    '#6A0572', // Purple
-                    '#06D6A0'  // Green
+                    '#FF6B6B', 
+                    '#4ECDC4', 
+                    '#FFD166', 
+                    '#6A0572', 
+                    '#06D6A0'  
                 ];
-                return colors[(level - 1) % colors.length]; // Use modulo for repeating colors
+                return colors[(level - 1) % colors.length]; 
             }
             
             // Initialize food before first draw
@@ -904,7 +904,7 @@
                 for (let i = 0; i < snake.length; i++) {
                     // Snake head
                     if (i === 0) {
-                        ctx.fillStyle = snakeColors[(level - 1) % snakeColors.length]; // Use modulo for repeating colors
+                        ctx.fillStyle = snakeColors[(level - 1) % snakeColors.length]; 
                     } 
                     // Snake body
                     else {
@@ -1023,9 +1023,8 @@
             
             // Create particles
             function createParticles(x, y, color) {
-                // Safely parse RGB values from color string
                 const rgbMatch = color.match(/\d+/g);
-                let r = 255, g = 255, b = 255; // Default to white if parsing fails
+                let r = 255, g = 255, b = 255; 
                 if (rgbMatch && rgbMatch.length >= 3) {
                     r = parseInt(rgbMatch[0]);
                     g = parseInt(rgbMatch[1]);
@@ -1063,7 +1062,7 @@
                 level = 1;
                 speed = 1;
                 baseSpeed = speed;
-                arrowKeysHeld = 0; // Reset arrow key counter
+                arrowKeysHeld = 0; 
                 
                 // Create first food
                 createFood();
@@ -1078,7 +1077,7 @@
                 gameOverScreen.classList.add('hidden');
                 levelUpScreen.classList.add('hidden');
                 startScreen.classList.add('hidden');
-                nameInputModal.classList.add('hidden'); // Ensure modal is hidden
+                nameInputModal.classList.add('hidden'); 
                 
                 gameRunning = true;
                 gamePaused = false;
@@ -1088,7 +1087,7 @@
                 if (animationFrameId) {
                     cancelAnimationFrame(animationFrameId);
                 }
-                lastRenderTime = 0; // Reset last render time for smoother start
+                lastRenderTime = 0; 
                 animationFrameId = requestAnimationFrame(gameLoop);
             }
             
@@ -1165,13 +1164,12 @@
                 gameRunning = false;
                 finalScoreDisplay.textContent = `Your score: ${score}`;
                 gameOverScreen.classList.remove('hidden');
-                cancelAnimationFrame(animationFrameId); // Stop game loop
+                cancelAnimationFrame(animationFrameId); 
 
-                // Show the custom name input modal
                 modalScoreDisplay.textContent = `Your score: ${score}`;
-                playerNameInput.value = ''; // Clear previous input
-                nameInputModal.classList.add('visible'); // Show modal
-                playerNameInput.focus(); // Focus on input field
+                playerNameInput.value = ''; 
+                nameInputModal.classList.add('visible'); 
+                playerNameInput.focus(); 
             }
 
             // Function to save score to Firebase (called from modal)
@@ -1184,17 +1182,15 @@
                     })
                     .then(() => {
                         console.log("Score successfully saved to Firebase!");
-                        // Optionally show a small success message within the game UI
                     })
                     .catch((error) => {
                         console.error("Error saving score to Firebase:", error);
-                        // Optionally show an error message within the game UI
                     });
                 } else {
                     console.log("Score not saved (name not provided or empty).");
                 }
-                nameInputModal.classList.remove('visible'); // Hide modal after submission
-                resetGame(); // Reset game after score attempt
+                nameInputModal.classList.remove('visible'); 
+                initGame(); // Reset game after score attempt (or restart)
             }
             
             // Checkpoint reached function
@@ -1209,10 +1205,9 @@
                 
                 levelUpScreen.classList.remove('hidden');
                 
-                // Level up
                 level++;
                 levelDisplay.textContent = level;
-                baseSpeed = speed; // Retain current speed as base for new level
+                baseSpeed = speed; 
             }
             
             // Continue game at checkpoint
@@ -1221,7 +1216,7 @@
                 foodEaten = 0;
                 levelProgress.style.width = '0%';
                 
-                // Reset snake position (can modify this to keep current position for more advanced levels)
+                // Reset snake position 
                 snake = [
                     {x: 5, y: Math.floor(gridHeight / 2)},
                     {x: 4, y: Math.floor(gridHeight / 2)},
@@ -1238,7 +1233,7 @@
                 levelUpScreen.classList.add('hidden');
                 
                 gameRunning = true;
-                lastRenderTime = 0; // Reset last render time
+                lastRenderTime = 0; 
                 animationFrameId = requestAnimationFrame(gameLoop);
             }
             
@@ -1250,17 +1245,15 @@
                 
                 const progress = timestamp - lastRenderTime;
                 
-                // Controls game speed based on 'speed' variable
                 if (progress > 1000 / (5 + speed * 2)) {
                     moveSnake();
                     draw();
                     lastRenderTime = timestamp;
                 }
                 
-                if (gameRunning && !gamePaused) { // Only request frame if game is running and not paused
+                if (gameRunning && !gamePaused) { 
                     animationFrameId = requestAnimationFrame(gameLoop);
                 } else if (gamePaused) {
-                    // If paused, keep drawing to show pause state (optional, can remove)
                     draw(); 
                     animationFrameId = requestAnimationFrame(gameLoop);
                 }
@@ -1270,7 +1263,7 @@
             function increaseSpeed() {
                 if (speed < 5) {
                     speed++;
-                    baseSpeed = speed; // Update base speed
+                    baseSpeed = speed; 
                     speedDisplay.textContent = speed;
                 }
             }
@@ -1278,7 +1271,7 @@
             function decreaseSpeed() {
                 if (speed > 1) {
                     speed--;
-                    baseSpeed = speed; // Update base speed
+                    baseSpeed = speed; 
                     speedDisplay.textContent = speed;
                 }
             }
@@ -1301,11 +1294,10 @@
                 pauseBtn.innerHTML = gamePaused ? 
                     '<i class="fas fa-play"></i> Resume' : 
                     '<i class="fas fa-pause"></i> Pause';
-                // If resuming, restart the animation frame loop
                 if (gameRunning && !gamePaused) {
-                    lastRenderTime = 0; // Reset for smooth resume
+                    lastRenderTime = 0; 
                     animationFrameId = requestAnimationFrame(gameLoop);
-                } else if (gamePaused) { // If paused, cancel current animation frame
+                } else if (gamePaused) { 
                     cancelAnimationFrame(animationFrameId);
                 }
             });
@@ -1329,18 +1321,18 @@
             // Event listeners for custom name input modal
             submitNameBtn.addEventListener('click', () => {
                 const playerName = playerNameInput.value;
-                saveScoreToFirebase(playerName, score); // Pass the current game score
+                saveScoreToFirebase(playerName, score); 
             });
 
             cancelNameBtn.addEventListener('click', () => {
-                nameInputModal.classList.remove('visible'); // Hide modal
-                resetGame(); // Reset game without saving score
+                nameInputModal.classList.remove('visible'); 
+                initGame(); // Reset game without saving score
             });
 
             playerNameInput.addEventListener('keydown', (e) => {
                 if (e.key === 'Enter') {
-                    e.preventDefault(); // Prevent default Enter key behavior (e.g., form submission)
-                    submitNameBtn.click(); // Simulate click on submit button
+                    e.preventDefault(); 
+                    submitNameBtn.click(); 
                 }
             });
             
@@ -1355,12 +1347,12 @@
                 switch (e.key) {
                     case 'ArrowUp':
                         if (direction !== 'down') nextDirection = 'up';
-                        if (!e.repeat) { // Only increment on initial press, not on repeat
+                        if (!e.repeat) { 
                             arrowKeysHeld++;
-                            speed = baseSpeed + 2; // Temporarily increase speed
+                            speed = baseSpeed + 2; 
                             speedDisplay.textContent = speed;
                         }
-                        e.preventDefault(); // Prevent scrolling
+                        e.preventDefault(); 
                         break;
                     case 'ArrowDown':
                         if (direction !== 'up') nextDirection = 'down';
@@ -1395,10 +1387,10 @@
                             pauseBtn.innerHTML = gamePaused ? 
                                 '<i class="fas fa-play"></i> Resume' : 
                                 '<i class="fas fa-pause"></i> Pause';
-                            if (gameRunning && !gamePaused) { // Resume animation if unpaused
+                            if (gameRunning && !gamePaused) { 
                                 lastRenderTime = 0;
                                 animationFrameId = requestAnimationFrame(gameLoop);
-                            } else if (gamePaused) { // If paused, cancel current animation frame
+                            } else if (gamePaused) { 
                                 cancelAnimationFrame(animationFrameId);
                             }
                         }
@@ -1410,13 +1402,13 @@
                         e.preventDefault();
                         break;
                     case 'Enter':
-                        if (!gameRunning) { // If game is not running (i.e., on game over or start screen)
+                        if (!gameRunning) { 
                             if (!gameOverScreen.classList.contains('hidden')) {
-                                initGame(); // Restart game from game over screen
+                                initGame(); 
                             } else if (!levelUpScreen.classList.contains('hidden')) {
-                                continueGame(); // Continue from level up screen
+                                continueGame(); 
                             } else if (!startScreen.classList.contains('hidden')) {
-                                initGame(); // Start game from start screen
+                                initGame(); 
                             }
                         }
                         e.preventDefault();
@@ -1438,8 +1430,8 @@
                     case 'ArrowRight':
                         arrowKeysHeld--;
                         if (arrowKeysHeld <= 0) {
-                            arrowKeysHeld = 0; // Prevent negative count
-                            speed = baseSpeed; // Revert to base speed
+                            arrowKeysHeld = 0; 
+                            speed = baseSpeed; 
                             speedDisplay.textContent = speed;
                         }
                         e.preventDefault();
@@ -1448,7 +1440,6 @@
             });
             
             // Direction button controls for mobile
-            // Make sure these only change nextDirection if game is running and not paused AND modal is not open
             upBtn.addEventListener('click', () => { 
                 if (gameRunning && !gamePaused && !nameInputModal.classList.contains('visible') && direction !== 'down') nextDirection = 'up'; 
             });
