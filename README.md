@@ -1,11 +1,12 @@
-
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Neon Snake Adventure</title>
+    <title>Neon Snake Adventure - High Scores</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* Existing CSS from your snake.html */
         * {
             margin: 0;
             padding: 0;
@@ -336,11 +337,159 @@
         .dpad-center { 
             grid-column: 2; 
             grid-row: 2; 
-            background: rgba(255, _localStorage255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.05);
             cursor: default;
         }
 
+        /* NEW CSS FOR HIGH SCORES LIST */
+        .high-score-section {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            padding: 20px 30px;
+            margin-top: 20px;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-left: 20px; /* Add some space to the left of the game container */
+        }
+
+        .high-score-section h3 {
+            font-size: 1.8rem;
+            color: #feb47b;
+            text-align: center;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px rgba(254, 180, 123, 0.5);
+        }
+
+        .high-score-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .high-score-list li {
+            font-size: 1.2rem;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #a0d2eb;
+        }
+
+        .high-score-list li:last-child {
+            border-bottom: none;
+        }
+
+        .high-score-list li span:first-child {
+            font-weight: bold;
+            color: #ff7e5f;
+        }
+
+        .high-score-list li span:last-child {
+            font-weight: bold;
+            color: #feb47b;
+        }
+
+        /* CUSTOM MODAL STYLES */
+        .custom-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7); /* Dark semi-transparent background */
+            backdrop-filter: blur(5px); /* Blurred background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000; /* On top of everything */
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .custom-modal-overlay.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .custom-modal-content {
+            background: linear-gradient(135deg, #1a0f3d, #3c2a6f); /* Gradient background */
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.6);
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+            border: 2px solid #86a8e7; /* Neon blue border */
+            transform: translateY(-50px); /* Initial slide-in effect */
+            opacity: 0;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+
+        .custom-modal-overlay.visible .custom-modal-content {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .custom-modal-content h3 {
+            font-size: 2.5rem;
+            background: linear-gradient(45deg, #ff7e5f, #feb47b);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 20px;
+            text-shadow: 0 0 15px rgba(255, 126, 95, 0.7);
+        }
+
+        .custom-modal-content p {
+            font-size: 1.3rem;
+            color: #a0d2eb;
+            margin-bottom: 25px;
+        }
+
+        .custom-modal-content input {
+            width: calc(100% - 40px); /* Adjust for padding */
+            padding: 15px 20px;
+            margin-bottom: 25px;
+            border: 2px solid #86a8e7; /* Neon blue border */
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            font-size: 1.1rem;
+            outline: none;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .custom-modal-content input:focus {
+            border-color: #ff7e5f; /* Highlight on focus */
+            box-shadow: 0 0 10px rgba(255, 126, 95, 0.5);
+        }
+
+        .custom-modal-content .modal-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        /* Reusing .btn styles for modal buttons */
+        .custom-modal-content .btn {
+            padding: 12px 25px;
+            font-size: 1rem;
+        }
+
+        /* Media queries for responsiveness */
         @media (max-width: 768px) {
+            body {
+                flex-direction: column; /* Stack game and scores vertically */
+                height: auto; /* Allow content to dictate height */
+                min-height: 100vh; /* Ensure full viewport height on smaller screens */
+            }
+            .game-container {
+                margin-top: 20px; /* Add space from top */
+                height: auto;
+            }
             .header {
                 flex-direction: column;
                 gap: 15px;
@@ -375,10 +524,40 @@
             
             .mobile-controls {
                 display: flex;
+                position: static; /* Position normally within flow */
+                margin-top: 20px; /* Space between game and controls */
             }
             
             .controls {
                 flex-wrap: wrap;
+            }
+
+            .high-score-section {
+                width: 95%; /* Adjust width for smaller screens */
+                margin-left: 0; /* Remove left margin */
+                margin-top: 20px; /* Add space between game and scores */
+                margin-bottom: 20px; /* Add space at bottom */
+            }
+            .high-score-section h3 {
+                font-size: 1.5rem;
+                margin-bottom: 15px;
+            }
+            .high-score-list li {
+                font-size: 1.1rem;
+                padding: 8px 0;
+            }
+
+            .custom-modal-content {
+                padding: 25px;
+            }
+            .custom-modal-content h3 {
+                font-size: 2rem;
+            }
+            .custom-modal-content p {
+                font-size: 1.1rem;
+            }
+            .custom-modal-content input {
+                padding: 12px 15px;
             }
         }
 
@@ -459,7 +638,7 @@
                 
                 <div id="game-over" class="overlay hidden">
                     <h2>Game Over!</h2>
-                    <p id="final-score">Your score: 0</p>
+                    <p id="final-score-display">Your score: 0</p>
                     <button class="btn" id="restart-btn">
                         <i class="fas fa-redo"></i> Play Again
                     </button>
@@ -502,7 +681,95 @@
         </div>
     </div>
 
+    <!-- New High Score Section -->
+    <div class="high-score-section">
+        <h3>Top 10 High Scores</h3> <!-- Changed from Top 3 to Top 10 -->
+        <ul id="top-scores-list" class="high-score-list">
+            <li>Loading scores...</li>
+        </ul>
+    </div>
+
+    <!-- CUSTOM NAME INPUT MODAL -->
+    <div id="name-input-modal" class="custom-modal-overlay hidden">
+        <div class="custom-modal-content">
+            <h3>Congratulations!</h3>
+            <p id="modal-score-display">Your score: 0</p>
+            <p>You've achieved a high score! Please enter your full name:</p>
+            <input type="text" id="player-name-input" placeholder="Your Full Name" maxlength="20">
+            <div class="modal-buttons">
+                <button class="btn" id="submit-name-btn">Submit Score</button>
+                <button class="btn btn-secondary" id="cancel-name-btn">No Thanks</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDKs -->
+    <!-- Firebase App SDK (required) -->
+    <script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-app-compat.js"></script>
+    <!-- Firebase Realtime Database SDK (for storing/retrieving scores) -->
+    <script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-database-compat.js"></script>
+
     <script>
+        // Your Firebase configuration object.
+        // These are the details you provided in the screenshot.
+        const firebaseConfig = {
+            apiKey: "AIzaSyDSDph09hxTg0oC9cLEkKDHKX5_TPL.PPL.g",
+            authDomain: "snake-44a34.firebaseapp.com",
+            projectId: "snake-44a34",
+            // StorageBucket correction: often projectId.appspot.com
+            storageBucket: "snake-44a34.appspot.com",
+            messagingSenderId: "999271392382",
+            appId: "1:999271392382:web:3249364e02ec81de51242f",
+            measurementId: "G-ECMRQGJ775" // Optional, if analytics enabled
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        // Reference the Database service
+        // This 'database' object will be used in your game logic script to save scores.
+        const database = firebase.database();
+
+        // Code to fetch and display high scores in real-time
+        // 'scores' is the node (collection) in Firebase Realtime Database where high scores will be stored.
+        const scoresRef = database.ref('scores');
+
+        // .orderByChild('score'): Sorts scores based on the 'score' property.
+        // .limitToLast(10): Retrieves only the last 10 entries after sorting (which will be the highest scores).
+        // Changed from 3 to 10 for top 10 scores.
+        scoresRef.orderByChild('score').limitToLast(10).on('value', (snapshot) => {
+            const highScores = [];
+            snapshot.forEach((childSnapshot) => {
+                // Add each score entry to the highScores array.
+                highScores.push(childSnapshot.val());
+            });
+
+            // Sort scores in descending order (Highest to Lowest)
+            // Because limitToLast gives the highest scores at the end, we need to reverse them.
+            highScores.sort((a, b) => b.score - a.score);
+
+            // Display the top 10 scores in the HTML list.
+            const topScoresList = document.getElementById('top-scores-list');
+            topScoresList.innerHTML = ''; // Clear the previous list.
+
+            if (highScores.length === 0) {
+                topScoresList.innerHTML = '<li>No scores yet. Play to set a record!</li>';
+            } else {
+                highScores.forEach((scoreData, index) => {
+                    const listItem = document.createElement('li');
+                    // Display score with name and value.
+                    listItem.innerHTML = `<span>${index + 1}. ${scoreData.name}</span><span>${scoreData.score}</span>`;
+                    topScoresList.appendChild(listItem);
+                });
+            }
+            console.log("High Scores Updated:", highScores); // For console checking.
+        }, (error) => {
+            console.error("Firebase fetch error:", error);
+            document.getElementById('top-scores-list').innerHTML = '<li>Failed to load scores. Please check console for errors.</li>';
+        });
+
+
+        // Existing game logic from your snake.html starts here
         document.addEventListener('DOMContentLoaded', () => {
             // Game elements
             const canvas = document.getElementById('game-canvas');
@@ -522,8 +789,16 @@
             const resetBtn = document.getElementById('reset-btn');
             const speedUpBtn = document.getElementById('speed-up-btn');
             const speedDownBtn = document.getElementById('speed-down-btn');
-            const finalScore = document.getElementById('final-score');
+            const finalScoreDisplay = document.getElementById('final-score-display');
             
+            // Custom Name Input Modal elements
+            const nameInputModal = document.getElementById('name-input-modal');
+            const modalScoreDisplay = document.getElementById('modal-score-display');
+            const playerNameInput = document.getElementById('player-name-input');
+            const submitNameBtn = document.getElementById('submit-name-btn');
+            const cancelNameBtn = document.getElementById('cancel-name-btn');
+
+
             // Direction buttons
             const upBtn = document.getElementById('up-btn');
             const downBtn = document.getElementById('down-btn');
@@ -539,7 +814,7 @@
             let food = {};
             let direction = 'right';
             let nextDirection = 'right';
-            let score = 0;
+            let score = 0; // Game score
             let level = 1;
             let speed = 1;
             let baseSpeed = speed; // Store the base speed (user-set speed)
@@ -604,7 +879,7 @@
                     '#6A0572', // Purple
                     '#06D6A0'  // Green
                 ];
-                return colors[level - 1];
+                return colors[(level - 1) % colors.length]; // Use modulo for repeating colors
             }
             
             // Initialize food before first draw
@@ -629,7 +904,7 @@
                 for (let i = 0; i < snake.length; i++) {
                     // Snake head
                     if (i === 0) {
-                        ctx.fillStyle = snakeColors[level - 1];
+                        ctx.fillStyle = snakeColors[(level - 1) % snakeColors.length]; // Use modulo for repeating colors
                     } 
                     // Snake body
                     else {
@@ -662,24 +937,37 @@
                     let eyeOffsetX = 0;
                     let eyeOffsetY = 0;
                     
-                    if (direction === 'right') eyeOffsetX = 3;
-                    if (direction === 'left') eyeOffsetX = -3;
-                    if (direction === 'up') eyeOffsetY = -3;
-                    if (direction === 'down') eyeOffsetY = 3;
+                    if (direction === 'right') {
+                        eyeOffsetX = gridSize / 4;
+                        eyeOffsetY = -gridSize / 8;
+                    }
+                    if (direction === 'left') {
+                        eyeOffsetX = -gridSize / 4;
+                        eyeOffsetY = -gridSize / 8;
+                    }
+                    if (direction === 'up') {
+                        eyeOffsetX = -gridSize / 8;
+                        eyeOffsetY = -gridSize / 4;
+                    }
+                    if (direction === 'down') {
+                        eyeOffsetX = -gridSize / 8;
+                        eyeOffsetY = gridSize / 4;
+                    }
                     
+                    // Draw both eyes
                     ctx.beginPath();
                     ctx.arc(
-                        snake[0].x * gridSize + gridSize/2 + eyeOffsetX/2, 
-                        snake[0].y * gridSize + gridSize/3 + eyeOffsetY/2, 
-                        3, 0, Math.PI * 2
+                        snake[0].x * gridSize + gridSize / 2 + eyeOffsetX, 
+                        snake[0].y * gridSize + gridSize / 2 + eyeOffsetY, 
+                        gridSize / 6, 0, Math.PI * 2
                     );
                     ctx.fill();
                     
                     ctx.beginPath();
                     ctx.arc(
-                        snake[0].x * gridSize + gridSize/2 + eyeOffsetX/2, 
-                        snake[0].y * gridSize + 2*gridSize/3 + eyeOffsetY/2, 
-                        3, 0, Math.PI * 2
+                        snake[0].x * gridSize + gridSize / 2 - eyeOffsetX, 
+                        snake[0].y * gridSize + gridSize / 2 - eyeOffsetY, 
+                        gridSize / 6, 0, Math.PI * 2
                     );
                     ctx.fill();
                 }
@@ -735,10 +1023,14 @@
             
             // Create particles
             function createParticles(x, y, color) {
-                const rgb = color.match(/\d+/g);
-                const r = parseInt(rgb[0]);
-                const g = parseInt(rgb[1]);
-                const b = parseInt(rgb[2]);
+                // Safely parse RGB values from color string
+                const rgbMatch = color.match(/\d+/g);
+                let r = 255, g = 255, b = 255; // Default to white if parsing fails
+                if (rgbMatch && rgbMatch.length >= 3) {
+                    r = parseInt(rgbMatch[0]);
+                    g = parseInt(rgbMatch[1]);
+                    b = parseInt(rgbMatch[2]);
+                }
                 
                 for (let i = 0; i < 15; i++) {
                     particles.push({
@@ -755,7 +1047,7 @@
                 }
             }
             
-            // Initialize game
+            // Initialize game (called on start or restart)
             function initGame() {
                 // Reset game state
                 snake = [
@@ -786,6 +1078,7 @@
                 gameOverScreen.classList.add('hidden');
                 levelUpScreen.classList.add('hidden');
                 startScreen.classList.add('hidden');
+                nameInputModal.classList.add('hidden'); // Ensure modal is hidden
                 
                 gameRunning = true;
                 gamePaused = false;
@@ -795,6 +1088,7 @@
                 if (animationFrameId) {
                     cancelAnimationFrame(animationFrameId);
                 }
+                lastRenderTime = 0; // Reset last render time for smoother start
                 animationFrameId = requestAnimationFrame(gameLoop);
             }
             
@@ -866,12 +1160,41 @@
                 }
             }
             
-            // Game over function
+            // Game over function - Show custom name input modal
             function gameOver() {
                 gameRunning = false;
-                finalScore.textContent = `Your score: ${score}`;
+                finalScoreDisplay.textContent = `Your score: ${score}`;
                 gameOverScreen.classList.remove('hidden');
-                cancelAnimationFrame(animationFrameId);
+                cancelAnimationFrame(animationFrameId); // Stop game loop
+
+                // Show the custom name input modal
+                modalScoreDisplay.textContent = `Your score: ${score}`;
+                playerNameInput.value = ''; // Clear previous input
+                nameInputModal.classList.add('visible'); // Show modal
+                playerNameInput.focus(); // Focus on input field
+            }
+
+            // Function to save score to Firebase (called from modal)
+            function saveScoreToFirebase(name, finalScore) {
+                if (name && name.trim() !== "") {
+                    database.ref('scores').push({
+                        name: name.trim(),
+                        score: finalScore,
+                        timestamp: firebase.database.ServerValue.TIMESTAMP
+                    })
+                    .then(() => {
+                        console.log("Score successfully saved to Firebase!");
+                        // Optionally show a small success message within the game UI
+                    })
+                    .catch((error) => {
+                        console.error("Error saving score to Firebase:", error);
+                        // Optionally show an error message within the game UI
+                    });
+                } else {
+                    console.log("Score not saved (name not provided or empty).");
+                }
+                nameInputModal.classList.remove('visible'); // Hide modal after submission
+                resetGame(); // Reset game after score attempt
             }
             
             // Checkpoint reached function
@@ -885,6 +1208,11 @@
                 }, 1500);
                 
                 levelUpScreen.classList.remove('hidden');
+                
+                // Level up
+                level++;
+                levelDisplay.textContent = level;
+                baseSpeed = speed; // Retain current speed as base for new level
             }
             
             // Continue game at checkpoint
@@ -893,7 +1221,7 @@
                 foodEaten = 0;
                 levelProgress.style.width = '0%';
                 
-                // Reset snake position
+                // Reset snake position (can modify this to keep current position for more advanced levels)
                 snake = [
                     {x: 5, y: Math.floor(gridHeight / 2)},
                     {x: 4, y: Math.floor(gridHeight / 2)},
@@ -910,6 +1238,7 @@
                 levelUpScreen.classList.add('hidden');
                 
                 gameRunning = true;
+                lastRenderTime = 0; // Reset last render time
                 animationFrameId = requestAnimationFrame(gameLoop);
             }
             
@@ -921,13 +1250,18 @@
                 
                 const progress = timestamp - lastRenderTime;
                 
+                // Controls game speed based on 'speed' variable
                 if (progress > 1000 / (5 + speed * 2)) {
                     moveSnake();
                     draw();
                     lastRenderTime = timestamp;
                 }
                 
-                if (gameRunning) {
+                if (gameRunning && !gamePaused) { // Only request frame if game is running and not paused
+                    animationFrameId = requestAnimationFrame(gameLoop);
+                } else if (gamePaused) {
+                    // If paused, keep drawing to show pause state (optional, can remove)
+                    draw(); 
                     animationFrameId = requestAnimationFrame(gameLoop);
                 }
             }
@@ -963,11 +1297,16 @@
             });
             
             pauseBtn.addEventListener('click', () => {
-                if (gameRunning) {
-                    gamePaused = !gamePaused;
-                    pauseBtn.innerHTML = gamePaused ? 
-                        '<i class="fas fa-play"></i> Resume' : 
-                        '<i class="fas fa-pause"></i> Pause';
+                gamePaused = !gamePaused;
+                pauseBtn.innerHTML = gamePaused ? 
+                    '<i class="fas fa-play"></i> Resume' : 
+                    '<i class="fas fa-pause"></i> Pause';
+                // If resuming, restart the animation frame loop
+                if (gameRunning && !gamePaused) {
+                    lastRenderTime = 0; // Reset for smooth resume
+                    animationFrameId = requestAnimationFrame(gameLoop);
+                } else if (gamePaused) { // If paused, cancel current animation frame
+                    cancelAnimationFrame(animationFrameId);
                 }
             });
             
@@ -986,9 +1325,32 @@
                     decreaseSpeed();
                 }
             });
+
+            // Event listeners for custom name input modal
+            submitNameBtn.addEventListener('click', () => {
+                const playerName = playerNameInput.value;
+                saveScoreToFirebase(playerName, score); // Pass the current game score
+            });
+
+            cancelNameBtn.addEventListener('click', () => {
+                nameInputModal.classList.remove('visible'); // Hide modal
+                resetGame(); // Reset game without saving score
+            });
+
+            playerNameInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault(); // Prevent default Enter key behavior (e.g., form submission)
+                    submitNameBtn.click(); // Simulate click on submit button
+                }
+            });
             
             // Keyboard controls for direction and other actions
             document.addEventListener('keydown', (e) => {
+                // Ignore keyboard input if modal is open
+                if (nameInputModal.classList.contains('visible')) {
+                    return;
+                }
+
                 // Handle direction and speed increase
                 switch (e.key) {
                     case 'ArrowUp':
@@ -1033,6 +1395,12 @@
                             pauseBtn.innerHTML = gamePaused ? 
                                 '<i class="fas fa-play"></i> Resume' : 
                                 '<i class="fas fa-pause"></i> Pause';
+                            if (gameRunning && !gamePaused) { // Resume animation if unpaused
+                                lastRenderTime = 0;
+                                animationFrameId = requestAnimationFrame(gameLoop);
+                            } else if (gamePaused) { // If paused, cancel current animation frame
+                                cancelAnimationFrame(animationFrameId);
+                            }
                         }
                         e.preventDefault();
                         break;
@@ -1042,11 +1410,13 @@
                         e.preventDefault();
                         break;
                     case 'Enter':
-                        if (!gameRunning) {
+                        if (!gameRunning) { // If game is not running (i.e., on game over or start screen)
                             if (!gameOverScreen.classList.contains('hidden')) {
-                                initGame();
+                                initGame(); // Restart game from game over screen
                             } else if (!levelUpScreen.classList.contains('hidden')) {
-                                continueGame();
+                                continueGame(); // Continue from level up screen
+                            } else if (!startScreen.classList.contains('hidden')) {
+                                initGame(); // Start game from start screen
                             }
                         }
                         e.preventDefault();
@@ -1056,6 +1426,11 @@
 
             // Revert speed when arrow keys are released
             document.addEventListener('keyup', (e) => {
+                // Ignore keyboard input if modal is open
+                if (nameInputModal.classList.contains('visible')) {
+                    return;
+                }
+
                 switch (e.key) {
                     case 'ArrowUp':
                     case 'ArrowDown':
@@ -1073,12 +1448,21 @@
             });
             
             // Direction button controls for mobile
-            upBtn.addEventListener('click', () => { if (direction !== 'down') nextDirection = 'up'; });
-            downBtn.addEventListener('click', () => { if (direction !== 'up') nextDirection = 'down'; });
-            leftBtn.addEventListener('click', () => { if (direction !== 'right') nextDirection = 'left'; });
-            rightBtn.addEventListener('click', () => { if (direction !== 'left') nextDirection = 'right'; });
+            // Make sure these only change nextDirection if game is running and not paused AND modal is not open
+            upBtn.addEventListener('click', () => { 
+                if (gameRunning && !gamePaused && !nameInputModal.classList.contains('visible') && direction !== 'down') nextDirection = 'up'; 
+            });
+            downBtn.addEventListener('click', () => { 
+                if (gameRunning && !gamePaused && !nameInputModal.classList.contains('visible') && direction !== 'up') nextDirection = 'down'; 
+            });
+            leftBtn.addEventListener('click', () => { 
+                if (gameRunning && !gamePaused && !nameInputModal.classList.contains('visible') && direction !== 'right') nextDirection = 'left'; 
+            });
+            rightBtn.addEventListener('click', () => { 
+                if (gameRunning && !gamePaused && !nameInputModal.classList.contains('visible') && direction !== 'left') nextDirection = 'right'; 
+            });
             
-            // Initial draw
+            // Initial draw when DOM content is loaded
             draw();
         });
     </script>
