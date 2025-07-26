@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Colorful Snake Game</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <canvas id="gameCanvas" width="800" height="600"></canvas>
+    <div class="panel">
+      <h2>Snake Stats</h2>
+      <label>Level:</label>
+      <select id="levelSelect">
+        <option value="100">Easy</option>
+        <option value="70">Medium</option>
+        <option value="40">Hard</option>
+      </select>
+      <span>Score: <strong id="score">0</strong></span>
+      <span>Speed: <strong id="speed">Normal</strong></span>
+      <span>Press Space to Pause/Resume</span>
+    </div>
+  </div>
+
+  <div class="game-over-screen" id="gameOverScreen">
+    <div>Game Over! Final Score: <span id="finalScore">0</span></div>
+    <button onclick="resetGame()">Play Again</button>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
